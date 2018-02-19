@@ -300,7 +300,7 @@ float Ship::ColonyCapacity() const {
         if (part_class != PC_COLONY)
             continue;
         // add capacity for all instances of colony parts to accumulator
-        retval += this->InitialPartMeterValue(METER_CAPACITY, part_name);
+        retval += this->CurrentPartMeterValue(METER_CAPACITY, part_name);
     }
 
     return retval;
@@ -323,7 +323,7 @@ float Ship::TroopCapacity() const {
         if (part_class != PC_TROOPS)
             continue;
         // add capacity for all instances of colony parts to accumulator
-        retval += this->InitialPartMeterValue(METER_CAPACITY, part_name);
+        retval += this->CurrentPartMeterValue(METER_CAPACITY, part_name);
     }
 
     return retval;
