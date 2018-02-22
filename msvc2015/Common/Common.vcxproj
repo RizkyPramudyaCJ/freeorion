@@ -158,6 +158,7 @@
     <ClInclude Include="..\..\Empire\ResearchQueue.h" />
     <ClInclude Include="..\..\Empire\ProductionQueue.h" />
     <ClInclude Include="..\..\Empire\EmpireManager.h" />
+    <ClInclude Include="..\..\Empire\Government.h" />
     <ClInclude Include="..\..\Empire\ResourcePool.h" />
     <ClInclude Include="..\..\Empire\PopulationPool.h" />
     <ClInclude Include="..\..\Empire\Supply.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="..\..\Empire\ResearchQueue.cpp" />
     <ClCompile Include="..\..\Empire\ProductionQueue.cpp" />
     <ClCompile Include="..\..\Empire\EmpireManager.cpp" />
+    <ClCompile Include="..\..\Empire\Government.cpp" />
     <ClCompile Include="..\..\Empire\ResourcePool.cpp" />
     <ClCompile Include="..\..\Empire\PopulationPool.cpp" />
     <ClCompile Include="..\..\Empire\Supply.cpp" />
