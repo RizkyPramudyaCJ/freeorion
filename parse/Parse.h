@@ -34,7 +34,6 @@ namespace parse {
     FO_PARSE_API std::map<std::string, std::unique_ptr<BuildingType>> buildings(const boost::filesystem::path& path);
     FO_PARSE_API std::map<std::string, std::unique_ptr<FieldType>> fields(const boost::filesystem::path& path);
     FO_PARSE_API std::map<std::string, std::unique_ptr<Special>> specials(const boost::filesystem::path& path);
-
     FO_PARSE_API std::map<std::string, std::unique_ptr<Policy>> policies(const boost::filesystem::path& path);
 
     /** Parse all species in directory \p path, store them with their name in \p
