@@ -19,11 +19,13 @@ FO_COMMON_API extern const int INVALID_DESIGN_ID;
 
 // Forward declarations
 class Tech;
+class Policy;
 class BuildingType;
 class Special;
 class Species;
 class FieldType;
 const Tech*         GetTech(const std::string& name);
+const Policy*       GetPolicy(const std::string& name);
 const BuildingType* GetBuildingType(const std::string& name);
 const Special*      GetSpecial(const std::string& name);
 const Species*      GetSpecies(const std::string& name);
@@ -50,14 +52,12 @@ namespace {
     typedef std::string (*TagString)(const std::string& data, const std::string& tag, bool& valid);
 
     /// Get string substitute for a translated text tag
-    std::string TextString(const std::string& data, const std::string& tag, bool& valid) {
-        return UserString(data);
-    }
+    std::string TextString(const std::string& data, const std::string& tag, bool& valid)
+    { return UserString(data); }
 
     /// Get string substitute for a raw text tag
-    std::string RawTextString(const std::string& data, const std::string& tag, bool& valid) {
-        return data;
-    }
+    std::string RawTextString(const std::string& data, const std::string& tag, bool& valid)
+    { return data; }
 
     ///Get string substitute for a tag that is a universe object
     std::string UniverseObjectString(const std::string& data, const std::string& tag, bool& valid) {
@@ -175,6 +175,7 @@ namespace {
             subs[VarText::FIELD_ID_TAG] = UniverseObjectString;
         subs[VarText::COMBAT_ID_TAG] = CombatLogString;
         subs[VarText::TECH_TAG] = NameString<Tech, GetTech>;
+        subs[VarText::POLICY_TAG] = NameString<Policy, GetPolicy>;
         subs[VarText::BUILDING_TYPE_TAG] = NameString<BuildingType, GetBuildingType>;
         subs[VarText::SHIP_HULL_TAG] = NameString<HullType, GetHullType>;
         subs[VarText::SHIP_PART_TAG] = NameString<PartType, GetPartType>;
@@ -283,6 +284,7 @@ const std::string VarText::DESIGN_ID_TAG = "shipdesign";
 const std::string VarText::PREDEFINED_DESIGN_TAG = "predefinedshipdesign";
 
 const std::string VarText::TECH_TAG = "tech";
+const std::string VarText::POLICY_TAG = "policy";
 const std::string VarText::BUILDING_TYPE_TAG = "buildingtype";
 const std::string VarText::SPECIAL_TAG = "special";
 const std::string VarText::SHIP_HULL_TAG = "shiphull";

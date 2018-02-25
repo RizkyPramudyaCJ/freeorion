@@ -67,6 +67,7 @@ public:
     static const std::string PREDEFINED_DESIGN_TAG;
 
     static const std::string TECH_TAG;
+    static const std::string POLICY_TAG;
     static const std::string BUILDING_TYPE_TAG;
     static const std::string SPECIAL_TAG;
     static const std::string SHIP_HULL_TAG;
