@@ -115,13 +115,12 @@ void Empire::serialize(Archive& ar, const unsigned int version)
         for (auto& entry : temp_stringset)
             m_techs[entry] = BEFORE_FIRST_TURN;
     } else {
-        ar  & BOOST_SERIALIZATION_NVP(m_techs);
+        ar  & BOOST_SERIALIZATION_NVP(m_techs)
+            & BOOST_SERIALIZATION_NVP(m_available_policies);
+
         if (Archive::is_loading::value && version < 2) {
-            std::map<std::string, int> temp_string_int_map;
-            ar  & boost::serialization::make_nvp("m_adopted_policy_turns", temp_string_int_map);
             m_adopted_policy_turns.clear();
-        } else {
-            ar  & BOOST_SERIALIZATION_NVP(m_adopted_policy_turns);
+            m_available_policies.clear();
         }
     }
 
@@ -176,7 +175,7 @@ void Empire::serialize(Archive& ar, const unsigned int version)
     }
 }
 
-BOOST_CLASS_VERSION(Empire, 2)
+BOOST_CLASS_VERSION(Empire, 3)
 
 template void Empire::serialize<freeorion_bin_oarchive>(freeorion_bin_oarchive&, const unsigned int);
 template void Empire::serialize<freeorion_bin_iarchive>(freeorion_bin_iarchive&, const unsigned int);
