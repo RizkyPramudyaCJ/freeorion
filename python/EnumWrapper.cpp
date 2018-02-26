@@ -184,6 +184,7 @@ namespace FreeOrionPython {
             .value("shipHull",      UIT_SHIP_HULL)
             .value("shipDesign",    UIT_SHIP_DESIGN)
             .value("tech",          UIT_TECH)
+            .value("policy",        UIT_POLICY)
         ;
         enum_<Aggression>("aggression")
             .value("invalid",       INVALID_AGGRESSION)
