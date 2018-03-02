@@ -1370,6 +1370,8 @@ namespace {
             return empire->ShipPartTypesOwned();
         if (parsed_map_name == "TurnTechResearched")
             return empire->ResearchedTechs();
+        if (parsed_map_name == "TurnPolicyAdopted")
+            return empire->AdoptedPolicyTurns();
 
         return EMPTY_STRING_INT_MAP;
     }
@@ -1538,7 +1540,7 @@ namespace {
         return sum;
     }
 
-    float  GetFloatEmpirePropertySumAllIntKeys(int empire_id, const std::string& parsed_property_name) {
+    float GetFloatEmpirePropertySumAllIntKeys(int empire_id, const std::string& parsed_property_name) {
         float sum = 0.0f;
 
         // single empire
@@ -1608,7 +1610,8 @@ int ComplexVariable<int>::Eval(const ScriptingContext& context) const
         variable_name == "SpeciesShipsOwned" ||
         variable_name == "SpeciesShipsProduced" ||
         variable_name == "SpeciesShipsScrapped" ||
-        variable_name == "TurnTechResearched")
+        variable_name == "TurnTechResearched" ||
+        variable_name == "TurnPolicyAdopted")
     {
         int empire_id = ALL_EMPIRES;
         if (m_int_ref1) {
