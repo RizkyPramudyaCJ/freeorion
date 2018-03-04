@@ -7,6 +7,7 @@
 #include "../util/Logger.h"
 #include "../util/AppInterface.h"
 #include "../util/MultiplayerCommon.h"
+#include "../util/GameRules.h"
 #include "../util/CheckSums.h"
 #include "../util/ScopedTimer.h"
 #include "../universe/ValueRef.h"
