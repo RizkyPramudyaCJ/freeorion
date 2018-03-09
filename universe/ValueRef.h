@@ -1446,6 +1446,10 @@ template <>
 FO_COMMON_API std::string ComplexVariable<std::string>::Eval(const ScriptingContext& context) const;
 
 template <>
+FO_COMMON_API std::vector<std::string> ComplexVariable<std::vector<std::string>>::Eval(
+    const ScriptingContext& context) const;
+
+template <>
 FO_COMMON_API std::string ComplexVariable<Visibility>::Dump(unsigned short ntabs) const;
 
 template <>
@@ -1456,6 +1460,10 @@ FO_COMMON_API std::string ComplexVariable<int>::Dump(unsigned short ntabs) const
 
 template <>
 FO_COMMON_API std::string ComplexVariable<std::string>::Dump(unsigned short ntabs) const;
+
+template <>
+FO_COMMON_API std::string ComplexVariable<std::vector<std::string>>::Dump(
+    unsigned short ntabs) const;
 
 template <class T>
 template <class Archive>
