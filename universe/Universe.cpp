@@ -10,6 +10,7 @@
 #include "../util/GameRules.h"
 #include "../Empire/Empire.h"
 #include "../Empire/EmpireManager.h"
+#include "../Empire/Government.h"
 #include "IDAllocator.h"
 #include "Building.h"
 #include "Fleet.h"
@@ -86,7 +87,7 @@ namespace boost {
 }
 
 
-extern FO_COMMON_API const int ALL_EMPIRES            = -1;
+extern FO_COMMON_API const int ALL_EMPIRES = -1;
 
 /////////////////////////////////////////////
 // class Universe
@@ -1324,6 +1325,34 @@ void Universe::GetEffectsAndTargets(Effect::TargetsCauses& targets_causes,
     }
     double tech_time = type_timer.elapsed();
 
+    // 3.5) EffectsGroups from Policies
+    TraceLogger(effects) << "Universe::GetEffectsAndTargets for POLICIES";
+    type_timer.restart();
+    std::list<std::vector<std::shared_ptr<const UniverseObject>>> policy_sources;
+    for (auto& entry : Empires()) {
+        const Empire* empire = entry.second;
+        auto source = empire->Source();
+        if (!source)
+            continue;
+
+        policy_sources.push_back(std::vector<std::shared_ptr<const UniverseObject>>(1U, source));
+        for (const auto tech_entry : empire->ResearchedTechs()) {
+            const Policy* policy = GetPolicy(tech_entry.first);
+            if (!policy) continue;
+
+            for (auto& effects_group : policy->Effects()) {
+                targets_causes_reorder_buffer.push_back(Effect::TargetsCauses());
+                run_queue.AddWork(new StoreTargetsAndCausesOfEffectsGroupsWorkItem(
+                    effects_group, policy_sources.back(), ECT_POLICY, policy->Name(),
+                    all_potential_targets, targets_causes_reorder_buffer.back(),
+                    cached_source_condition_matches,
+                    invariant_condition_matches,
+                    global_mutex));
+            }
+        }
+    }
+    double policy_time = type_timer.elapsed();
+
     // 4) EffectsGroups from Buildings
     TraceLogger(effects) << "Universe::GetEffectsAndTargets for BUILDINGS";
     type_timer.restart();
@@ -1488,7 +1517,7 @@ void Universe::GetEffectsAndTargets(Effect::TargetsCauses& targets_causes,
     // FIXME: each job is an effectsgroup, and we need that separation for
     // execution anyway, so maintain it here instead of merging.
     for (const Effect::TargetsCauses& job_results : targets_causes_reorder_buffer) {
-        for (const std::pair<Effect::SourcedEffectsGroup, Effect::TargetsAndCause>& result : job_results) {
+        for (const auto& result : job_results) {
             targets_causes.push_back(result);
         }
     }
@@ -1497,6 +1526,7 @@ void Universe::GetEffectsAndTargets(Effect::TargetsCauses& targets_causes,
                   << " ship species: " << ship_species_time*1000
                   << " specials: " << special_time*1000
                   << " techs: " << tech_time*1000
+                  << " policies: " << policy_time*1000
                   << " buildings: " << building_time*1000
                   << " hulls/parts: " << ships_time*1000
                   << " fields: " << fields_time*1000;
