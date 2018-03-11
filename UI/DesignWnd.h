@@ -22,9 +22,7 @@ struct Availability {
     BuildDesignator. */
 class ShipDesignManager {
 public:
-
     /** Designs provides ordered lists of designs for display in the UI.
-
      Derived classes provide an implementation for the pure virtual
      OrderedIDs(), which provides ship design ids in display order. They may
      also provide additional functionality used by the DesignWnd. */
