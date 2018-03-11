@@ -61,23 +61,21 @@ public:
 
     /** \name Mutators */ //@{
     void SizeMove(const GG::Pt& ul, const GG::Pt& lr) override;
-
     void Render() override;
-
-    void            Reset();
-    void            Sanitize();
+    void Reset();
+    void Sanitize();
 
     /** Shows \a part_type in design encyclopedia window */
-    void            ShowPartTypeInEncyclopedia(const std::string& part_type);
+    void ShowPartTypeInEncyclopedia(const std::string& part_type);
 
     /** Shows \a hull_type in design encyclopedia window */
-    void            ShowHullTypeInEncyclopedia(const std::string& hull_type);
+    void ShowHullTypeInEncyclopedia(const std::string& hull_type);
 
     /** Shows ship design with id \a design_id in design encyclopedia window */
-    void            ShowShipDesignInEncyclopedia(int design_id);
+    void ShowShipDesignInEncyclopedia(int design_id);
 
     /** Enables, or disables if \a enable is false, issuing orders via this DesignWnd. */
-    void            EnableOrderIssuing(bool enable = true);
+    void EnableOrderIssuing(bool enable = true);
     //@}
 
 private:
@@ -85,10 +83,9 @@ private:
     class PartPalette;      // shows parts that can be clicked for detailed or dragged on slots in design
     class MainPanel;        // shows image of hull, slots and parts, design name and description entry boxes, confirm button
 
-    void    DesignChanged();
-    void    DesignNameChanged();
-
-    void    InitializeWindows();
+    void DesignChanged();
+    void DesignNameChanged();
+    void InitializeWindows();
 
     std::shared_ptr<EncyclopediaDetailPanel>    m_detail_panel;
     std::shared_ptr<BaseSelector>               m_base_selector;
