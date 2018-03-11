@@ -1260,10 +1260,6 @@ public:
     void SizeMove(const GG::Pt& ul, const GG::Pt& lr) override;
     void AcceptDrops(const GG::Pt& pt, std::vector<std::shared_ptr<GG::Wnd>> wnds,
                      GG::Flags<GG::ModKey> mod_keys) override;
-
-    PartGroupsType GroupAvailableDisplayableParts(const Empire* empire);
-    void CullSuperfluousParts(std::vector<const PartType* >& this_group,
-                              ShipPartClass pclass, int empire_id, int loc_id);
     void Populate();
 
     void ShowClass(ShipPartClass part_class, bool refresh_list = true);
@@ -1284,6 +1280,10 @@ protected:
                          const GG::Pt& pt, GG::Flags<GG::ModKey> mod_keys) const override;
 
 private:
+    PartGroupsType GroupAvailableDisplayableParts(const Empire* empire) const;
+    void CullSuperfluousParts(std::vector<const PartType*>& this_group,
+                              ShipPartClass part_class, int empire_id, int loc_id) const;
+
     std::set<ShipPartClass>     m_part_classes_shown;   // which part classes should be shown
     bool                        m_show_superfluous_parts;
     int                         m_previous_num_columns;
@@ -1395,7 +1395,7 @@ void PartsListBox::AcceptDrops(const GG::Pt& pt,
     ClearPartSignal(part_type->Name());
 }
 
-PartGroupsType PartsListBox::GroupAvailableDisplayableParts(const Empire* empire) {
+PartGroupsType PartsListBox::GroupAvailableDisplayableParts(const Empire* empire) const {
     PartGroupsType part_groups;
     // loop through all possible parts
     for (const auto& entry : GetPartTypeManager()) {
@@ -1462,10 +1462,12 @@ bool PartALocationSubsumesPartB(const PartType* check_part, const PartType* ref_
     return result;
 }
 
-void PartsListBox::CullSuperfluousParts(std::vector<const PartType* >& this_group,
-                                        ShipPartClass pclass, int empire_id, int loc_id)
+void PartsListBox::CullSuperfluousParts(std::vector<const PartType*>& this_group,
+                                        ShipPartClass part_class, int empire_id,
+                                        int loc_id) const
 {
-    /// This is not merely a check for obsolescence; see PartsListBox::Populate for more info
+    // This is not merely a check for obsolescence; see PartsListBox::Populate
+    // for more info
     static float min_bargain_ratio = -1.0;
     static float max_cost_ratio = -1.0;
     static float max_time_ratio = -1.0;
@@ -1585,9 +1587,9 @@ void PartsListBox::Populate() {
     // if showing parts for a particular empire, cull redundant parts (if enabled)
     if (empire) {
         for (auto& part_group : part_groups) {
-            ShipPartClass pclass = part_group.first.first;
+            ShipPartClass part_class = part_group.first.first;
             if (!m_show_superfluous_parts)
-                CullSuperfluousParts(part_group.second, pclass, empire_id, loc_id);
+                CullSuperfluousParts(part_group.second, part_class, empire_id, loc_id);
         }
     }
 
