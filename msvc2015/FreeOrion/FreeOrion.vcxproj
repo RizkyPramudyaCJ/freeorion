@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -179,6 +179,7 @@
     <ClInclude Include="..\..\UI\FleetButton.h" />
     <ClInclude Include="..\..\UI\FleetWnd.h" />
     <ClInclude Include="..\..\UI\GalaxySetupWnd.h" />
+    <ClInclude Include="..\..\UI\GovernmentWnd.h" />
     <ClInclude Include="..\..\UI\GraphControl.h" />
     <ClInclude Include="..\..\UI\Hotkeys.h" />
     <ClInclude Include="..\..\UI\IconTextBrowseWnd.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="..\..\UI\FleetButton.cpp" />
     <ClCompile Include="..\..\UI\FleetWnd.cpp" />
     <ClCompile Include="..\..\UI\GalaxySetupWnd.cpp" />
+    <ClCompile Include="..\..\UI\GovernmentWnd.cpp" />
     <ClCompile Include="..\..\UI\GraphControl.cpp" />
     <ClCompile Include="..\..\UI\Hotkeys.cpp" />
     <ClCompile Include="..\..\UI\IconTextBrowseWnd.cpp" />
