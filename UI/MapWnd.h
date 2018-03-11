@@ -23,6 +23,7 @@ class MapWndPopup;
 class DesignWnd;
 class ProductionWnd;
 class ResearchWnd;
+class GovernmentWnd;
 class EncyclopediaDetailPanel;
 class CombatReportWnd;
 class ObjectListWnd;
@@ -98,6 +99,9 @@ public:
      * is visible because although the MapWnd is visible the design window is opaque
      * and on top.*/
     bool                        InDesignViewMode() const;
+
+    /** same, but for government window. */
+    bool                        InGovernmentViewMode() const;
 
     /** returns the currently set moderator action in this MapWnd's
       * ModeratorActionsWnd. */
@@ -427,6 +431,10 @@ private:
     void ShowDesign();
     void HideDesign();
 
+    bool ToggleGovernment();
+    void ShowGovernment();
+    void HideGovernment();
+
     bool ShowMenu();
 
     bool CloseSystemView(); //!< closes off the current system view
@@ -465,6 +473,7 @@ private:
     std::shared_ptr<ResearchWnd>                m_research_wnd = nullptr;       //!< research screen
     std::shared_ptr<ProductionWnd>              m_production_wnd = nullptr;     //!< production screen
     std::shared_ptr<DesignWnd>                  m_design_wnd = nullptr;         //!< design screen
+    std::shared_ptr<GovernmentWnd>              m_government_wnd = nullptr;     //!< government screen
     std::shared_ptr<EncyclopediaDetailPanel>    m_pedia_panel = nullptr;        //!< encyclpedia panel
     std::shared_ptr<ObjectListWnd>              m_object_list_wnd = nullptr;    //!< filterable list of objects in universe
     std::shared_ptr<ModeratorActionsWnd>        m_moderator_wnd = nullptr;      //!< buttons to select moderator actions
@@ -575,8 +584,8 @@ private:
     std::shared_ptr<GG::Button>     m_industry_wasted = nullptr, m_research_wasted = nullptr,
                                     m_btn_moderator = nullptr, m_btn_messages = nullptr, m_btn_empires = nullptr,
                                     m_btn_siterep = nullptr, m_btn_research = nullptr, m_btn_production = nullptr,
-                                    m_btn_design = nullptr, m_btn_pedia = nullptr, m_btn_graphs = nullptr,
-                                    m_btn_objects = nullptr, m_btn_menu = nullptr;
+                                    m_btn_design = nullptr, m_btn_government = nullptr, m_btn_pedia = nullptr,
+                                    m_btn_graphs = nullptr, m_btn_objects = nullptr, m_btn_menu = nullptr;
     std::shared_ptr<GG::Label>      m_FPS = nullptr;
 
     std::shared_ptr<MapScaleLine>       m_scale_line = nullptr;     //!< indicates the on-screen distance that reprensents an in-universe distance
