@@ -1224,7 +1224,6 @@ void PartControl::LDoubleClick(const GG::Pt& pt, GG::Flags<GG::ModKey> mod_keys)
 void PartControl::RClick(const GG::Pt& pt, GG::Flags<GG::ModKey> mod_keys)
 { RightClickedSignal(m_part, pt); }
 
-
 void PartControl::SetAvailability(const AvailabilityManager::DisplayedAvailabilies& type) {
     auto disabled = std::get<Availability::Obsolete>(type);
     m_icon->Disable(disabled);
@@ -1290,7 +1289,8 @@ private:
     const AvailabilityManager&  m_availabilities_state;
 };
 
-PartsListBox::PartsListBoxRow::PartsListBoxRow(GG::X w, GG::Y h, const AvailabilityManager& availabilities_state) :
+PartsListBox::PartsListBoxRow::PartsListBoxRow(
+    GG::X w, GG::Y h, const AvailabilityManager& availabilities_state) :
     CUIListBox::Row(w, h, ""),    // drag_drop_data_type = "" implies not draggable row
     m_availabilities_state(availabilities_state)
 {}
@@ -1420,46 +1420,48 @@ PartGroupsType PartsListBox::GroupAvailableDisplayableParts(const Empire* empire
     return part_groups;
 }
 
-// Checks if the Location condition of the check_part totally contains the Location condition of ref_part
-// i,e,, the ref_part condition is met anywhere the check_part condition is
-bool LocationASubsumesLocationB(const Condition::ConditionBase* check_part_loc,
-                                const Condition::ConditionBase* ref_part_loc)
-{
-    //const Condition::ConditionBase* check_part_loc = check_part->Location();
-    //const Condition::ConditionBase* ref_part_loc = ref_part->Location();
-    if (dynamic_cast<const Condition::All*>(ref_part_loc))
-        return true;
-    if (!check_part_loc || !ref_part_loc)
+namespace {
+    // Checks if the Location condition of the check_part totally contains the Location condition of ref_part
+    // i,e,, the ref_part condition is met anywhere the check_part condition is
+    bool LocationASubsumesLocationB(const Condition::ConditionBase* check_part_loc,
+                                    const Condition::ConditionBase* ref_part_loc)
+    {
+        //const Condition::ConditionBase* check_part_loc = check_part->Location();
+        //const Condition::ConditionBase* ref_part_loc = ref_part->Location();
+        if (dynamic_cast<const Condition::All*>(ref_part_loc))
+            return true;
+        if (!check_part_loc || !ref_part_loc)
+            return false;
+        if (*check_part_loc == *ref_part_loc)
+            return true;
+        // could do more involved checking for And conditions & Or, etc,
+        // for now, will simply be conservative
         return false;
-    if (*check_part_loc == *ref_part_loc)
-        return true;
-    // could do more involved checking for And conditions & Or, etc,
-    // for now, will simply be conservative
-    return false;
-}
+    }
 
-bool PartALocationSubsumesPartB(const PartType* check_part, const PartType* ref_part) {
-    static std::map<std::pair<std::string, std::string>, bool> part_loc_comparison_map;
+    bool PartALocationSubsumesPartB(const PartType* check_part, const PartType* ref_part) {
+        static std::map<std::pair<std::string, std::string>, bool> part_loc_comparison_map;
 
-    auto part_pair = std::make_pair(check_part->Name(), ref_part->Name());
-    auto map_it = part_loc_comparison_map.find(part_pair);
-    if (map_it != part_loc_comparison_map.end())
-        return map_it->second;
+        auto part_pair = std::make_pair(check_part->Name(), ref_part->Name());
+        auto map_it = part_loc_comparison_map.find(part_pair);
+        if (map_it != part_loc_comparison_map.end())
+            return map_it->second;
 
-    bool result = true;
-    if (check_part->Name() == "SH_MULTISPEC" || ref_part->Name() == "SH_MULTISPEC")
-        result = false;
+        bool result = true;
+        if (check_part->Name() == "SH_MULTISPEC" || ref_part->Name() == "SH_MULTISPEC")
+            result = false;
 
-    auto check_part_loc = check_part->Location();
-    auto ref_part_loc = ref_part->Location();
-    result = result && LocationASubsumesLocationB(check_part_loc, ref_part_loc);
-    part_loc_comparison_map[part_pair] = result;
-    //if (result && check_part_loc && ref_part_loc) {
-    //    DebugLogger() << "Location for partA, " << check_part->Name() << ", subsumes that for partB, " << ref_part->Name();
-    //    DebugLogger() << "   ...PartA Location is " << check_part_loc->Description();
-    //    DebugLogger() << "   ...PartB Location is " << ref_part_loc->Description();
-    //}
-    return result;
+        auto check_part_loc = check_part->Location();
+        auto ref_part_loc = ref_part->Location();
+        result = result && LocationASubsumesLocationB(check_part_loc, ref_part_loc);
+        part_loc_comparison_map[part_pair] = result;
+        //if (result && check_part_loc && ref_part_loc) {
+        //    DebugLogger() << "Location for partA, " << check_part->Name() << ", subsumes that for partB, " << ref_part->Name();
+        //    DebugLogger() << "   ...PartA Location is " << check_part_loc->Description();
+        //    DebugLogger() << "   ...PartB Location is " << ref_part_loc->Description();
+        //}
+        return result;
+    }
 }
 
 void PartsListBox::CullSuperfluousParts(std::vector<const PartType*>& this_group,
@@ -4342,7 +4344,7 @@ void DesignWnd::MainPanel::HandleBaseTypeChange(DesignWnd::BaseSelector::BaseSel
     DesignChanged();
 }
 
-void DesignWnd::MainPanel::Populate(){
+void DesignWnd::MainPanel::Populate() {
     for (const auto& slot: m_slots)
         DetachChild(slot);
     m_slots.clear();
